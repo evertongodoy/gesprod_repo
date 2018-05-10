@@ -4,3 +4,4 @@ estaticos
 medias_upload
 *.sqlite3
 *.pyc
+.env
