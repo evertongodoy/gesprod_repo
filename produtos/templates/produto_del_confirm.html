@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block titulo %} CONFIRMAÇÃO DE EXCLUSÃO {% endblock %}
+
+{% block principal %}
+
+    <h1>Deseja realmente deletar o produto {{ prod.descricao }}</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-danger">
+            Delete
+        </button>
+    </form>
+
+{% endblock %}

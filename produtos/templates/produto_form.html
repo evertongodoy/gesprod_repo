@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block titulo %} CADASTRO DE NOVO PRODUTO {% endblock %}
+
+{% block principal %}
+    <h3>Dados do Produto</h3>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ formulario|bootstrap }}
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
+    </form>
+
+{% endblock %}

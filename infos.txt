@@ -1,0 +1,637 @@
+Inicio, Secao 2 1ula 10
+
+ Dica apenas: Para escrever o REQUIREMENTS com o PIP3.6.exe FREEZE:
+   
+              pip3.6.exe freeze > teste.txt
+
+----------------------------------------------------------------
+
+Secao 2, aula 11.
+  
+  Criou superuser com 02:30
+
+  Registrando para que ele aparece no ADMIN 05:30
+
+----------------------------------------------------------------
+
+Secao 2, aula 12.
+
+  Ensina a renderizar um texto simples - 01:00 Observar no video o return HttpResponse(......)  
+
+  Pulei para Secao 4 aula 21.
+
+  - Voltando da Secao 4, aula 22. 
+
+  Criando a pasta "meus_templates" - 02:00
+
+  Finalizou fazendo as validacoes das IDADES e mostrando no HTML
+
+
+----------------------------------------------------------------
+
+Secao 2, aula 13.
+
+ settings.py
+
+  * Geralmente arquivos ESTATICOS sao colocados no servidor pelo DESENVOLVEDOR
+
+  Definindo um diretório de arquivos ESTATICOS para css, javascript, imagem, etc. - 01:00
+  
+  Criou no Settings a config STATICFILES_DIRS = ['nome_da_pasta'] e a pasta "nome_da_pasta" na raiz do projeto
+  
+  Criou um styles.css na nome_da_pasta  04:00
+
+  Vai usar no html com a template tag {% load static %} 04:40
+
+
+
+----------------------------------------------------------------
+
+Secao 2, aula 14.
+
+ settings.py
+  
+  * Geralmente arquivos MEDIA sao colocados no servidor pelo USUARIO, "Fotos, Documentos, etc."
+
+  Definiu o MEDIA_URL para os arquivos de MEDIA
+  
+  Definiu o "nome pasta" que serao salvas as MEDIAS em MEDIA_ROOT
+  
+  Criou na raiz do projeto a mesma pasta acima
+
+  VOLTOU no MODEL para agora definir um atributo de IMAGEM
+  
+  - Instalou a biblioteca Pillow para manipulação de imagens
+ 
+  
+----------------------------------------------------------------
+
+Secao 2, aula 15.- Complemento da aula 14.
+
+  Foi baseado nesse link
+
+  - https://docs.djangoproject.com/pt-br/2.0/howto/static-files/#serving-files-uploaded-by-a-user-during-development  
+  
+  Para disponibilizar os arquivos de MEDIA
+  
+  
+  
+---------------------------------------------------------------- 
+
+**** ---> Fica legal para o começo das implementações  <--- ****
+
+Secao 3, aula 16.- Extraiu as URLs do projeto principal. Iniciando os CRUD
+ 
+  No projeto principal, onde tem o settings.py, ele fez:
+
+  - Importou o include no URLs do proejto principal
+  - Importou o arquivo URLs do projeto PRODUTO e deu um nome "as url_produto" no projeto principal
+  - criou um path com o include dentro do urls.py do projeto principal.
+  - Criou um path no URLs do projeto "produtos" e definiu o nome do metodo.
+  - Criou o metodo no arquivo VIEWS.py do proejto "produtos"
+  - No views.py, ele reenderiza o index.html
+  
+  
+----------------------------------------------------------------
+
+Secao 3, aula 17.- Read - Lendo do Banco
+     
+  - Imoprtar do model, o modulo Produto do projeto "produtos" no arquivo "views.py"
+
+  O Django permite recuperar objetos do banco atraves de Managers, e por padrao todo Model vem com um Manager chamado Objects
+  
+  
+
+
+----------------------------------------------------------------
+
+Secao 3, aula 18.- Create - Criar um Produto
+
+  https://docs.djangoproject.com/pt-br/2.0/topics/forms/modelforms/#modelform
+
+  
+  Criar o path NEW no arquivo URLs.py com o metodo de insercao
+
+  ** Aqui vai criar um formulario. Criou um novo HTML para isso **  02:00     
+  
+  No HTML, criou:
+
+   - form
+   - metodo
+   - action
+
+  Na action, ele vai usar o "APELIDO" prod_new do arquivo URLs.py
+
+  
+  Baseado em um form, o Django vai criar Form, os campos, validações
+  
+  para isso:
+
+  1. Dentro da app "produtos", vamos criar o arquivo forms.py
+  2. Criar nossa primeira classe de FORM, que vai ser a ProdutoForm, que vai herdar de ModelForm
+  3. Definir uma SubClasse "Meta" e informar qual o Model que queremos
+     No Meta, vamos definir o model = Produto que é o model do meu ModelForm
+  4. Importar o model "Produto" do arquivo models.py
+  5. Definir os Fields, que sao os campos do ModelForm
+  6. Na View do prodjeto "produtos", precisamos importar agora esse FORM
+  7. Criar uma variavel "form ou formulario" no arquivo "vies.py" do projeto "produto", dentro do metodo "prod_new"
+  8. Retonrar esse form no metodo prod_new
+  9. Voltar no "produto_form.html" e fazer o FOR no formulario, e nao esquecer de usar o CSRF_TOKEN para evitar injeção de dados
+
+  
+
+  Resumo: 
+   1a. Fase
+   -  Criou a URL "prod_new" no URLS.py do projeto "produto"
+   -  A url bate na view "prod_new" e cria o form "ProdutoForm" que definimos ao criarmos o arquivo "forms.py",
+       que cria um form novo ou devolve um formulario preenchido.
+   
+   2a. Fase - Validar o form, se nao, nao vai salvar no banco    
+   - no arquivo views.py, fazer o "if form.is_valid():..." 
+   - Redirecionar para a pagina de listagem. Importar o redirect ao lado de render.
+    AQUI OCORREU ERRO EM 13:00, mas ele vai ver depois como (redirecionar para o apelido "prod_list"), vai voltar em 15:00.
+
+   - Com 13 minutos está tratando agora as imagens.
+
+   Precisa fazer o seguinte:
+   - No metodo "prod_new", na variavel "form", alem do request.POST, incluir também o request.FILES
+      que sao os FILES enviados na request
+   - Colocar dentro da secao <form> do arquivo produto_form.html a enctype="multipart/form-data".
+      Sem a enctype, não são considerados os dados de MEDIA dentro do nosso formulário.
+
+
+  Com 15:00, esta revendo como fazer o redirecionamento
+
+  faltava o "return" no "redirect". return redirect('prod_list') em views.py do projeto "produtos"
+
+  Em 16:00, ele adicionou um link HREF para criar um Novo Produto, apontando para o apelido "prod_new"
+
+
+
+----------------------------------------------------------------
+
+Secao 3, aula 19.- Update - Atualizar um Produto
+
+  Atualizar um objeto que já está no banco de dados
+
+  Primeira coisa: 01:00
+
+  Criar o path onde a request vai começar.
+
+  - No arquivo URLs.py do projeto "produtos", criar a URL de update
+    Detalhe é que agora tem um parâmetro na URL: 'update/<int:id>' 
+
+  No views.py do projeto produto, ele importou apos o redirect, o get_object_or_404
+    Tenta recuperar o objeto, se nao existir, devolve um 404 para que o usuária saiba que não existe
+
+  Consertou o metodo "prod_new", tirando a virgula e colocando OR NONE
+    ->  form = ProdutoForm(request.POST or None, request.FILES or None)
+
+  implementando o metodo prod_upd. 02:30
+
+  Adicionou um produto como instancia na variavel form.
+
+
+  05:15. Vai criar um LINK HREF no HTML "lista_produto.html" para que seja possivel o UPDATE
+  
+            <!-- ANTES -->
+            <!--li> {{ prod.descricao }} </li-->
+            <!-- DEPOIS 05:50 -->
+            <li><a href="{% url 'prod_upd' prod.id_produto %}">{{ prod.descricao }} </li></a>
+
+
+  06:23 - Vai comecar a corrigir um erro de atualizacao. Esta criando um novo usuario ao inves de atualizar
+ 
+  A solucao é remover da tag <form> a action ( action="{% url 'prod_new' %}" )
+  - para ela sempre bater na URL que está em questao no update
+  
+  
+
+----------------------------------------------------------------
+
+Secao 3, aula 20.- Delete - Remover um Produto
+  
+  Primeira coisa: 00:30
+
+  Sempre começando pela URL. Criar o path onde a request vai começar.
+
+  - No arquivo URLs.py do projeto "produtos", criar a URL de delete
+    Detalhe é que também tem um parâmetro na URL: 'delete/<int:id>' 
+  
+  Com 02:00, fez o IF request.method == POST. Criando processo para delete()
+
+  Com 03:30, criou o arquivo "produto_del_confirm.html"
+
+  Com 04:20 alterou o arquivo "lista_produto.html" para adicionar os LINKS de Delete.
+
+  Com 05:45 Finalizou o CRUD
+
+  
+  Indo agora sim para a aula 21 da seção 4
+  
+
+
+
+
+----------------------------------------------------------------
+
+Secao 4, aula 21.
+
+  Fez o git init do projeto
+
+
+
+
+----------------------------------------------------------------
+
+Secao 4, aula 22.
+
+  Criar uma pasta templates dentro da app "produtos", pois o django procura por padrao uma pasta template detro de cada APP - 01:40
+ 
+  -----------------------
+  Aqui, dentro dos traços "--", com 01:53 e vendo na volta depois que parei para voltar a seção 2, eu fiz o seguinte:
+
+   - Copiei a pasta "meus_templates" que estava na raiz do projeto, para a aplicação "produtos"
+   - Renomeei para "templates"
+   - Removi a indicação do settings.py que apontava para 'DIRS': ['meus_templates'], em TEMPLATES = [ ..
+  
+  No settings.py, ele registrou a app, que agroa é produtos para mim. "EU JA TINHA REGISTRADO" 02:25.
+ 
+  Como já estou assistindo o vídeo na volta e na sequencia, eu já tenho as URLs na app "produtos".
+  
+  Caso contrario, precisaria criar o arquivo "urls.py" na app "produtos", e importar as URLs com o INCLUDE
+
+  Testou a app com 05:00, e funcionou para mim. No video, ele ainda vai configurar a URL para arquivos de MEDIA.
+                             
+               CRIOU O MEDIA_URL = '/media/' e o MEDIA_ROOT = 'nome_pasta_media', que é a pasta
+  
+
+  -----------------------
+
+  incluindo o import das URLS do projeto "produtos", Criando o arquivos URLS.py em produtos e importanto o INCLUDE nos  imports desse arquivo 03:16
+
+  Com base no arquivo URLS do video da Secao 4 aula 22 em 03:30, fiz:  ((( vou precisar voltar aqui para ver o UPDATE e DELETE )))
+
+   - Atualizei meu arquivo "urls.py" do proejto "produtos"
+   - Criei um metodo no arquivo "views.py" para o "urls.py"
+     Implementacao do metodo:
+      
+     from django.http import HttpResponse
+
+     def prod_list(request):
+     return HttpResponse("TESTANDO A APPPPPPPP DE PRODUTOS. EVERTON GODOY")
+
+
+     Vou voltar para a Secao 2, aula 12 para fazer a parte de listagem no decorrer das demais aulas
+
+     Parei 05 05:27
+
+
+
+
+***********************************************************************************************************************************
+
+----------------------------------------------------------------
+
+Secao 4, aula 23. - HABILITANDO LOGIN
+
+  Vai utilizar:
+  
+  00:50
+  No arquivo "views.py" do projeto "produtos" o seguinte import: 
+
+    Import:    from django.contrib.auth.decorators import login_required
+
+  00:58
+  E vai decorar todas as views "metodos" com o @login_required
+	
+  
+  Com 01:30, fez um teste, lembrando de fazer LOGOUT da app ADMIN do django.
+
+
+  Com 01:50, vai definir no "settings.py", o seguinte:
+
+  * URL de Login  
+  - LOGIN_URL = '/login/'
+
+  * Para onde o Django vai mandar quando o usuario fizer login. Nesse caso, a o Apelido da Listagem de Produtos
+  - LOGIN_REDIRECT_URL = 'prod_list'
+
+  
+  Agora, precisa definir as URLs.
+
+  Ir no arquivo "urls.py" principal da aplicação, no caso dentro de "gestao_produtos", e fazer o seguinte:
+  Dica: Ao lado de settings.py
+  
+  
+  Importar:
+
+   - from django.contrib.auth import views as auth_views
+ 
+
+  E depois, importar as views no "urlpatterns = [ .."
+
+   - path('login/', auth_views.login, name='login'),
+   - path('logout/', auth_views.logout, name='logout'),
+
+
+  Aqui, com 03:14, ele testou e funcionou. Vai dar um erro dizendo que não localizou o arquivo login.html no diretório "registration"
+
+
+  Na secao 4, aula 22, eu removi a indicação de "templates" do 'DIRS': ['meus_templates'], em TEMPLATES = [ ..
+
+  Agora, com 03:30 ele vai adicionar novamente, e vai criar o diretório templates na raiz do projeto principal.
+ 
+  03:40 
+  Dentro do diretório "templates", criar o "registration"
+
+  Dentro do diretório "registration", criar o arquivo "login.html", com o conteúdo abaixo:
+
+
+  <h2>Login</h2>
+      <form method="POST">
+          {% csrf_token %}
+          {{ form.as_p}}
+          <button type="submit">Login</button>
+      </form>
+    
+
+ E agora, com 04:25, fez o teste. Vai aparecer uma pagina com os campos de username e passoword.
+  
+ Com 04:40 ele criou o superuser, mas eu já fiz isso na seção 2 aula 11.
+  
+ Em 06:20, criou a opção SAIR.
+
+ Foi no arquivo "lista_produtos.html", no meu caso, e inseriu o seguinte conteudo antes do FOR:
+
+  - <a href="{% url 'logout' %}">SAIR</a>
+   
+  
+
+
+----------------------------------------------------------------
+
+Secao 4, aula 24. - CRIANDO UMA HOME PAGE E IMPLEMENTANDO O LOGOUT  
+  
+  Para isso, vai criar uma aplicação HOME.
+  
+  00:37
+  python manage.py startapp home
+
+  Registrar no "settings.py"
+
+  01:00
+  Criar a pasta "templates" dentro da app "home"
+
+  Voltar no arquivo das urls principais "urls.py", ao lado de settings.py, e fazer o seguinte:
+
+  01:45.
+  importar as URLs do projeto "home".
+   -  from home import urls as home_urls
+
+  Incluir no "urlpatterns = [.." uma URL vazia, (para quando o usuario nao colocar nada na URL apos os IP).
+   - path('', include(home_urls)),
+
+  02:00
+  Criar na app "home", o arquivo "urls.py"
+
+  Copiou o arquivo inteiro "urls.py" do projeto "produtos" para o arquivo "urls.py" no projeto "home".
+
+  Removeu todas as URLS e manteve apenas uma vazia.
+   - path('', inicio, name='inicio')
+
+  Tirou os imports tambem, e adicionou o seguinte:
+   - from home.views import inicio
+
+  02:50
+  OBS: Nao é uma URL logn_required, é liberda para qualquer um.
+  No arquivo "views.py" da app "home", vai criar o metodo "inicio" que foi importado no "urls.py" anteriormente.
+
+  03:12
+  Criar o arquivo "home.html" dentro do diretório "templates" da app "home"
+  
+  03:55, testou a url localhost:9999, e tudo funcionou corretamente.
+
+  04:26, criou a condicao IF para mostrar o nome do usuario logado.
+   - {% if user.is_authenticated %}  
+  
+  06:00.
+  Quando faz o logout, vai passar a redirecionar para a pagina de login.
+  
+  No arquivo de "urls.py" principal, vai remover a linha abaixo:
+  - path('logout/', auth_views.logout, name='logout'),
+
+  Vai abrir o arquivo "urls.py" da app "home"
+ 
+  E vai incluir a url para logout nela.
+  - path('logout/', logout, name="logout") ***************************** VAI CORRIGIR ISSO LOGO ABAIXO
+
+
+  No arquivo "views.py" da app "home", no metodo vai criar o método "meu_logout(request):", (NAO LOGOUT PARA EVITAR LOOP DE ERRO)
+  
+  retornar nesse metodo "return redirect(inicio)"
+ 
+  10:00
+  Importar o logout de from django.contrib.auth import logout
+
+  Volta no "urls.py" da app "home", e agora importa o "meu_logout" e não mais o "logout"
+
+  E chama o metodo "meu_logout" e nao mais "logout" ********************* CORRIGIOU LOGO ACIMA
+  
+  
+
+
+
+
+----------------------------------------------------------------
+
+Secao 4, aula 25. - CONFIGURANDO POSTGRES - MAC
+
+  - Criou o banco de dados "dbprod", manualmente no postgres
+  
+  === LER O COMPLEMENTO ABAIXO ===, antes de fazer os proximos 2 comandos
+
+  - Rodou o comando python manage.py migrate
+  - Criou o superuser no postgres, python manage.py createsuperuser
+  
+  Complementando:
+
+  Na aula 28 da Seção 4, ele vai orientar para instalar o plugin "psycopg2".
+
+  Fazer o pip3.6.exe install psycopg2
+
+  Para que o Django consiga se comunicar com o banco de dados POSTGRES
+
+  => CONSERTANDO O PROBLEMA DE INSERCAO AUTOMATICA PARA ID COM O POSTGRES
+
+  https://docs.djangoproject.com/en/2.0/ref/models/fields/#primary-key
+  (AutoField) ->  id_produto = models.AutoField(primary_key=True, editable=False)
+
+----------------------------------------------------------------
+
+Secao 4, aula 26. - CONFIGURANDO POSTGRES - WINDOWS
+  
+  So fez o download do banco de dados e instalou.
+
+
+----------------------------------------------------------------
+
+Secao 4, aula 27. - CONFIGURANDO POSTGRES - LINUX
+
+  So fez o download do banco de dados e instalou.
+
+
+
+----------------------------------------------------------------
+
+Secao 4, aula 28. - COMPLEMENTO DA AULA 25
+
+  Instalou o PSYCOPG2
+
+
+
+
+----------------------------------------------------------------
+
+Secao 5, aula 29. - Adaptação ao HEROKU
+
+  Vou pular para Seção 6, aula 33 e seguir para a parte que trata o BOOTSTRAP.
+
+  --> VOLTANDO da Secao 6, aula 37. ********************************************************************************
+     
+  Ja apliquei o CSS do Bootstrap e quero subir a app no HEROKU
+  
+  https://github.com/Gpzim98/django-heroku
+
+  
+  04:18
+  Tratando o arquivo ".gitignore"
+  
+  
+  
+  
+
+
+
+----------------------------------------------------------------
+
+Secao 6, aula 33. - MELHORANDO A ESTETICA COM BOOTSTRAP
+
+
+  03:10
+  -> Vai começar a re-escrever a herança de TEMPLATES do DJANGO
+
+  https://getbootstrap.com/docs/4.0/components/buttons/
+
+    
+----------------------------------------------------------------
+
+Secao 6, aula 34. - PERSONALIZAR OS FORMULARIOS
+ 
+  Seguir, https://django-bootstrap-form.readthedocs.io/en/latest/#welcome-to-django-bootstrap-form-s-documentation
+ 
+  1o. 
+  01:00
+  -> Instalar o Django-Bootstrap-Form
+
+   - pip3.6.exe install django-bootstrap-form 
+   
+  2o. Registrar a app "bootstrapform" no settings
+
+
+
+    
+----------------------------------------------------------------
+
+Secao 6, aula 35. - AJUSTES DE GRID COM BOOTSTRAP
+ 
+
+  http://getbootstrap.com/docs/4.0/layout/grid/
+  http://getbootstrap.com/docs/4.0/components/alerts/
+  https://getbootstrap.com/docs/4.0/components/list-group/
+  
+  https://www.bootstrapcdn.com/fontawesome/
+
+
+  Copio as ROWS no "home.html"
+
+  <div class="row">
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+  </div>
+  
+  
+  06:00
+  Usou o {% load bootstrap %} na pagina de "login.html"
+
+  14:00  
+  Importar no "base.html" o Bootstrap Awesome
+  
+  15:00
+  Usou a lixeira
+  <i class="fa fa-trash" aria-hidden="true"></i>
+
+
+----------------------------------------------------------------
+
+Secao 6, aula 36. - FINALIZANDO O LAYOUT COM BOOTSTRAP
+
+  Badge
+  http://getbootstrap.com/docs/4.0/components/badge/
+
+ 
+  Rodapé
+  
+  https://getbootstrap.com/docs/4.1/examples/sticky-footer/
+
+  Pegou o CSS com F12 para copiar e colar
+
+   <footer class="footer">
+     <div class="container">
+        <span class="text-muted">Place sticky footer content here.</span>
+     </div>
+   </footer>
+
+  Abriu o arquivo "base.html", e criou um novo bloco {% block footer %} {% endblock %} dentro do <body>
+  
+  02:27
+  Vai dar problemas com o CSS
+   
+  No caso, eu já tenho um "style.css" criado na aula 13 Seção 2. Se não iria criar e configurar a pasta no "settings.py" de acordo com a mesma aula.
+  Porem, eu vou criar o arquivo "stickyfooter.css", na pasta "estaticos/css"
+
+  
+  03:30.
+  Vai importar esse arquivo CSS no arquivo "base.html"
+   
+   1o. -> {% load static %}
+   2o. -> <link rel="stylesheet" href="{% static 'css/stickyfooter.css' %}">
+ 
+
+   05:50, Alinhando os icones da lixeira a direita.
+   Já tenho o arquivo "style.css", vou usar ele e importar no "base.html" da mesma forma que o "stickyfooter.css".
+
+
+   07:41, Vai usar o BADGE no botão de SAIR no arquivo "lista_produtos.html"
+
+
+
+
+----------------------------------------------------------------
+
+Secao 6, aula 37. - DEPLOY FINAL E ULTIMA CONSIDERACOES
+
+   Aqui, eu vou voltar para a Seção 5, aula 29 para tentar subir no heroku novamente o projeto.
+
+
+
+
+
+ 

@@ -1,0 +1,6 @@
+.idea
+envc
+estaticos
+medias_upload
+*.sqlite3
+*.pyc
