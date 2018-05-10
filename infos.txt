@@ -493,7 +493,7 @@ Secao 4, aula 28. - COMPLEMENTO DA AULA 25
 
 ----------------------------------------------------------------
 
-Secao 5, aula 29. - Adaptação ao HEROKU
+Secao 5, aula 29. - Adaptação ao HEROKU - Parte 1.
 
   Vou pular para Seção 6, aula 33 e seguir para a parte que trata o BOOTSTRAP.
 
@@ -507,9 +507,120 @@ Secao 5, aula 29. - Adaptação ao HEROKU
   04:18
   Tratando o arquivo ".gitignore"
   
+  06:15
+  Instalar o "python-decouple" para esconder informações, por exemplo, senhas e a secret_key do settings.py
+
+  06:40
+  Criou um arquivo ".env" na pasta raiz do projeto.
+
+  07:38
+  Vai fazer o import do "decouple import config" no "settings.py" depois do "import os"
+  -> from decouple import config
+
+  08:45
+  Vai instalar o plugin "dj-database-url", que cuida da da leitura e criação da URL do banco de dados
+  -> pip3.6.exe install dj-database-url
+
+  09:05
+  Importou no "settings.py", o "django database url", logo apos o import do "decouple"
+  -> from dj_database_url import parse as dburl
   
+  09:11
+  Colocou no Settings.py "default_dburl e DATABASES", e removeu a configuração original do Banco de Dados.
+  -> Ele montar a url de Banco de Dados considerando o "sqlite3" que é local, mas se ele encontrar no seu ".env" uma config do seu banco, vai usar essa encontrada.
+
+  10:10
+  Instalar o "dj-static", O Django não serve arquivos estáticos, então a gente precisa providenciar que algém faça isso pelo django.
+  -> pip3.6.exe install dj-static
+
+  11:00
+  Fazer o import no arquivo "wsgi.py", ao lado do "settings.py" do "dj_static import Cling", apos o "get_wsgi_application"
+  -> from dj_static import Cling
+
+  E vai trocar a linha:
+  -> application = get_wsgi_application()
+
+  Por
+  -> application = Cling(get_wsgi_application())
+
+  do arquivo "wsgi.py".
   
+  (Se a requisicao chegar, ele vai verificar se é um arquivo estático, se nao for, entrega pro django, se for, o próprio Cling vai cuidar disso)
+
+
+  11:50
+  Vai criar a variavel "" no arquivo "settings.py".
+  -> STATIC_ROOT = os.path.join(BASE_DIR, 'arquivosestaticos')
+
+  Ele vai alimentar essa variavel com o nome da pasta que a gente quer, no caso "arquivosestaticos", concatendando o caminho todo da aplicação
   
+
+
+----------------------------------------------------------------
+
+Secao 5, aula 30. - Adaptação ao HEROKU - Parte 2.
+
+  Criando os arquivos Requirements.  
+
+  01:00
+  -> Um para o programador.
+  pip3.6.exe freeze > requirements-dev.txt
+
+  02:30
+  -> Um para o Servidor
+  Vai criar um requirements.txt manualmente.
+  Colocou no requirements do Servidor o "psycopg2==2.7.4", pois nao é sempre que o desenvolvedor vai precisar ter o "postgres" na maquina local.
+  
+
+  04:15
+  Criou um arquivo chamado "Procfile", sem extensao.
+  
+  Dentro dele, colou:
+  -> web: gunicorn website.wsgi --log-file -
+
+  04:30
+  Vai criar um arquivo que chama "runtime.txt", e vai colar nele:
+  -> python-3.6.0
+
+  = = = = = = = = = = =
+  
+  07:00
+  Vai criar a app no HEROKU
+  -> heroku apps:create gesprod
+
+   https://gesprod.herokuapp.com/ | https://git.heroku.com/gesprod.git
+
+
+
+----------------------------------------------------------------
+
+Secao 5, aula 31. - Adaptação ao HEROKU - Parte 3.
+
+  Setting the allowed hosts
+  No ALLOWED_HOSTS do "settings.py", vamos colocar o seguinte:
+  -> ALLOWED_HOSTS = ['gesprod.herokuapp.com', 'localhost']
+ 
+  01:20
+  Vamos enviar nossas configurações para o HEROKU
+  -> heroku plugins:install heroku-config
+  
+  É um plugin do HEROKU que vai gereciar as configurações ".env", onde será exportada para o ambiente remoto, no caso o Heroku.
+
+  
+  02:20
+  Enviando as configurações para o HEROKU
+  -> hheroku config:push -a gesprod
+  
+  (envc) C:\Users\Everton Godoy\Google Drive\Everton\Projetos_Python\Projetos\Produtos>heroku config:push -a gesprod
+  Successfully wrote settings to Heroku!
+
+
+
+  
+
+
+
+
 
 
 
