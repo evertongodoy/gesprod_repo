@@ -614,7 +614,26 @@ Secao 5, aula 31. - Adaptação ao HEROKU - Parte 3.
   (envc) C:\Users\Everton Godoy\Google Drive\Everton\Projetos_Python\Projetos\Produtos>heroku config:push -a gesprod
   Successfully wrote settings to Heroku!
 
+  04:50
+  = = = = = 
+  git add .
+  git commit -m 'Configuring the app'
+  git push heroku master --force
+  = = = = =
 
+  Subiu a APP !!!
+
+  Mas, ocorreu um erro 
+  -> No module named 'website'
+
+  No Procfile criado na aula 30, ele colocou:
+  -> web: gunicorn website.wsgi --log-file -
+
+  07:00
+  O correto é:
+  -> web: gunicorn gestao_produtos.wsgi --log-file -
+  Onde, "gestao_produtos" é o nome do projeto que possui o "settings.py"
+  
 
   
 
