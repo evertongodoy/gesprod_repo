@@ -635,8 +635,44 @@ Secao 5, aula 31. - Adaptação ao HEROKU - Parte 3.
   Onde, "gestao_produtos" é o nome do projeto que possui o "settings.py"
   
 
-  
+  08:15
+  Vai rodar todas as migrações remotamente, "la no servidor do HEROKU", e criar a parte de Banco de Dados.
+  -> heroku run python3 manage.py migrate
 
+  08:35
+  Criar um superusuario
+  -> heroku run python3 manage.py createsuperuser
+  
+  usuario: adm
+  senha..: django123
+
+
+  11:05
+  Exportar para o Heroku nos Settings do projeto HEROKU na WEB.
+  -> heroku config:set DEBUG=False
+
+
+
+----------------------------------------------------------------
+
+Secao 5, aula 32. - Considerações Finais.
+
+  
+  No HEROKU, foi criada uma variavel de ambiente chamada "DATABASE_URL".
+
+  E se observar no "settings.py", na configuração do banco de dados:
+
+  -> default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+  -> DATABASES = { 'default': config('DATABASE_URL', default=default_dburl, cast=dburl), }
+
+
+  Ele tenta primeiro "DATABASE_URL", se não achar, então ele tenta "default_dburl" que é a configuração do SQLITE3.
+   
+  
+  
+  
+  
 
 
 
@@ -759,6 +795,34 @@ Secao 6, aula 36. - FINALIZANDO O LAYOUT COM BOOTSTRAP
 Secao 6, aula 37. - DEPLOY FINAL E ULTIMA CONSIDERACOES
 
    Aqui, eu vou voltar para a Seção 5, aula 29 para tentar subir no heroku novamente o projeto.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+
+PERMISSOES
+
+No google "criar permissoes tipos de acesso django"
+
+http://pythonclub.com.br/solucao-quase-definitiva-para-permissoes-em-projetos-django.html
+
+
 
 
 
